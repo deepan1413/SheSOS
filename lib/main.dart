@@ -1,16 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:she_sos/ui/screens/home_screen.dart';
+import 'package:she_sos/ui/screens/login_screen.dart';
+import 'firebase_options.dart'; // from flutterfire configure
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const SheSOSApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SheSOSApp extends StatelessWidget {
+  const SheSOSApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('She SOS App'))),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'SheSOS',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.pink,
+      ),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          } else {
+            return const LoginScreen();
+          }
+        },
+      ),
     );
   }
 }

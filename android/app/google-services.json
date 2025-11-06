@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "987757075985",
+    "project_id": "shesos-2765e",
+    "storage_bucket": "shesos-2765e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987757075985:android:dd64de38738f0af0abdbb0",
+        "android_client_info": {
+          "package_name": "com.example.she_sos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD2uCXAUZA9PX5A9o_HLer6eWlkRTpOKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
