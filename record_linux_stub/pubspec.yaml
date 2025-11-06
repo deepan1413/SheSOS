@@ -1,0 +1,5 @@
+name: record_linux
+version: 1.0.0
+description: Dummy record_linux stub for Android/Web only
+environment:
+  sdk: ">=2.17.0 <4.0.0"
