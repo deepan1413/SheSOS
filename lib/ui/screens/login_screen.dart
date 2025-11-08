@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:she_sos/models/user_model.dart';
+import 'package:she_sos/services/AuthServices.dart';
 import 'package:she_sos/ui/screens/forget_password_screen.dart';
 
 import 'package:she_sos/ui/widgets/big_button.dart';
@@ -22,6 +27,24 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   bool _loading = false;
   bool _isForgotPassword = true;
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final userCredential = await GoogleSignInService.signInWithGoogle();
+
+      if (!mounted) return;
+      if (userCredential == null) {
+        print(
+          "${userCredential!.user?.email} ==========================signed in with Google",
+        );
+      } else {
+        print("Google Sign-In failed or was cancelled.");
+      }
+    } catch (e) {
+      print("Google Sign-In Error: $e");
+      rethrow;
+    }
+  }
 
   Future<void> _sendPasswordReset() async {}
 
@@ -54,13 +77,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<UserCredential?> signInWithGoogle() async {
-    try {} catch (e) {
-      print("Google Sign-In Error: $e");
-      return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,11 +87,11 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TitleFont(name: 'She SoS'),
-              NewFormField(hintText: 'Email', emailController: emailController),
+              NewFormField(hintText: 'Email', controller: emailController),
               ?_isForgotPassword
                   ? NewFormField(
                       hintText: 'Password',
-                      emailController: passwordController,
+                      controller: passwordController,
                     )
                   : null,
 
@@ -108,7 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: maincolor,
                   borderRadius: BorderRadius.circular(8),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      await signInWithGoogle();
+                    },
                     borderRadius: BorderRadius.circular(8),
                     // ignore: deprecated_member_use
                     splashColor: Colors.white.withOpacity(0.2),

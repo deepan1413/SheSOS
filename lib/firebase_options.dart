@@ -64,6 +64,7 @@ String GoogleMapkey="AIzaSyDgyhwP7oP1mo43sLvlyvg25Kq7LLByNNE";
     messagingSenderId: '987757075985',
     projectId: 'shesos-2765e',
     storageBucket: 'shesos-2765e.firebasestorage.app',
+    iosClientId: '987757075985-8977gmp14k482k5bdptfng36dast4ru1.apps.googleusercontent.com',
     iosBundleId: 'com.example.sheSos',
   );
 
@@ -73,6 +74,7 @@ String GoogleMapkey="AIzaSyDgyhwP7oP1mo43sLvlyvg25Kq7LLByNNE";
     messagingSenderId: '987757075985',
     projectId: 'shesos-2765e',
     storageBucket: 'shesos-2765e.firebasestorage.app',
+    iosClientId: '987757075985-8977gmp14k482k5bdptfng36dast4ru1.apps.googleusercontent.com',
     iosBundleId: 'com.example.sheSos',
   );
 
@@ -84,4 +86,5 @@ String GoogleMapkey="AIzaSyDgyhwP7oP1mo43sLvlyvg25Kq7LLByNNE";
     authDomain: 'shesos-2765e.firebaseapp.com',
     storageBucket: 'shesos-2765e.firebasestorage.app',
   );
+
 }

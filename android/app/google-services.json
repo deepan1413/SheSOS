@@ -12,7 +12,20 @@
           "package_name": "com.example.she_sos"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "987757075985-rt75dd85pqlugtqq5q0791g1qkili4in.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.she_sos",
+            "certificate_hash": "2473329c5db8155cc1cd038368b004d9b53dc36a"
+          }
+        },
+        {
+          "client_id": "987757075985-cid9t8cn1i0pdr9qbg33mbhv89lkf55v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDD2uCXAUZA9PX5A9o_HLer6eWlkRTpOKI"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987757075985-cid9t8cn1i0pdr9qbg33mbhv89lkf55v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "987757075985-8977gmp14k482k5bdptfng36dast4ru1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sheSos"
+              }
+            }
+          ]
         }
       }
     }

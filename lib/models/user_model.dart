@@ -1,13 +1,16 @@
+import 'dart:convert';
+
+
 class UserModel {
   final String userId;
   final String name;
   final String emailId;
   final String phoneNumber;
   final String address;
-  final List<Map<String, String>> emergencyContacts; // up to 5
+  final List<Map<String, String>> emergencyContacts;
   final String? profilePicture;
   final bool isVolunteer;
-  final Map<String, double>? currentLocation; // {latitude, longitude}
+  final Map<String, double>? currentLocation;
 
   UserModel({
     required this.userId,
@@ -15,13 +18,13 @@ class UserModel {
     required this.emailId,
     required this.phoneNumber,
     required this.address,
-    required this.emergencyContacts,
+    this.emergencyContacts = const [],
     this.profilePicture,
     this.isVolunteer = false,
     this.currentLocation,
   });
 
-  /// Convert UserModel -> Map (for local storage or API)
+  /// Converts object to Map (for Firestore / JSON)
   Map<String, dynamic> toMap() {
     return {
       'userId': userId,
@@ -36,7 +39,7 @@ class UserModel {
     };
   }
 
-  /// Convert Map -> UserModel (from local or API)
+  /// Creates an instance from Map (from Firestore / JSON)
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       userId: map['userId'] ?? '',
@@ -44,11 +47,13 @@ class UserModel {
       emailId: map['emailId'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       address: map['address'] ?? '',
-      emergencyContacts: List<Map<String, String>>.from(
-        (map['emergencyContacts'] ?? []).map(
-          (e) => Map<String, String>.from(e),
-        ),
-      ),
+      emergencyContacts: (map['emergencyContacts'] != null)
+          ? List<Map<String, String>>.from(
+              (map['emergencyContacts'] as List).map(
+                (e) => Map<String, String>.from(e),
+              ),
+            )
+          : [],
       profilePicture: map['profilePicture'],
       isVolunteer: map['isVolunteer'] ?? false,
       currentLocation: map['currentLocation'] != null
@@ -61,10 +66,14 @@ class UserModel {
     );
   }
 
-  /// Convert UserModel -> JSON string
-  String toJson() => toMap().toString();
+  /// Converts to JSON string
+  String toJson() => jsonEncode(toMap());
 
-  /// Copy an existing UserModel with modifications
+  /// Creates object from JSON string
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(jsonDecode(source));
+
+  /// Returns a modified copy of the user
   UserModel copyWith({
     String? userId,
     String? name,
@@ -93,4 +102,33 @@ class UserModel {
   String toString() {
     return 'UserModel(name: $name, userId: $userId, email: $emailId, phone: $phoneNumber, isVolunteer: $isVolunteer)';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is UserModel &&
+        other.userId == userId &&
+        other.name == name &&
+        other.emailId == emailId &&
+        other.phoneNumber == phoneNumber &&
+        other.address == address &&
+        other.profilePicture == profilePicture &&
+        other.isVolunteer == isVolunteer &&
+        other.emergencyContacts == emergencyContacts &&
+        other.currentLocation == currentLocation;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        userId,
+        name,
+        emailId,
+        phoneNumber,
+        address,
+        profilePicture,
+        isVolunteer,
+        emergencyContacts,
+        currentLocation,
+      );
 }
