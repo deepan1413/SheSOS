@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:she_sos/ui/screens/home_screen.dart';
 import 'package:she_sos/ui/screens/login_screen.dart';
+import 'package:she_sos/ui/screens/splash_screen.dart';
 import 'firebase_options.dart'; // from flutterfire configure
 
 void main() async {

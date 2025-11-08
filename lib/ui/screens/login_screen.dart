@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:she_sos/ui/screens/forget_password_screen.dart';
+
+import 'package:she_sos/ui/widgets/big_button.dart';
+import 'package:she_sos/ui/widgets/form_field.dart';
+import 'package:she_sos/ui/widgets/themedata.dart';
+import 'package:she_sos/ui/widgets/titleFont.dart';
 import 'signup_screen.dart';
 import 'home_screen.dart';
 
@@ -12,16 +18,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool _loading = false;
+  bool _isForgotPassword = true;
+
+  Future<void> _sendPasswordReset() async {}
 
   Future<void> _login() async {
     setState(() => _loading = true);
     try {
       final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
 
       // Optional: fetch user data from Firestore
@@ -32,14 +41,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (mounted) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
       }
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Login failed')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message ?? 'Login failed')));
     } finally {
       setState(() => _loading = false);
+    }
+  }
+
+  Future<UserCredential?> signInWithGoogle() async {
+    try {} catch (e) {
+      print("Google Sign-In Error: $e");
+      return null;
     }
   }
 
@@ -47,54 +65,96 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'SheSOS Login',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 24),
-              _loading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pink,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 14),
-                      ),
-                      onPressed: _login,
-                      child: const Text('Login'),
+              TitleFont(name: 'She SoS'),
+              NewFormField(hintText: 'Email', emailController: emailController),
+              ?_isForgotPassword
+                  ? NewFormField(
+                      hintText: 'Password',
+                      emailController: passwordController,
+                    )
+                  : null,
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _isForgotPassword = !_isForgotPassword;
+                      });
+                    },
+                    child: Text(
+                      'Forget Password?',
+                      style: TextStyle(color: maincolor),
                     ),
-              const SizedBox(height: 24),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignupScreen()));
-                },
-                child: const Text("Don’t have an account? Sign up"),
+                  ),
+                ],
+              ),
+
+              BigButton(
+                onPressed: _isForgotPassword ? _login : _sendPasswordReset,
+                text: _isForgotPassword ? 'Login' : 'Send Reset Link',
+              ),
+
+              Text('or'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Material(
+                  color: maincolor,
+                  borderRadius: BorderRadius.circular(8),
+                  child: InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(8),
+                    // ignore: deprecated_member_use
+                    splashColor: Colors.white.withOpacity(0.2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 50,
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/google_logo.png',
+                              height: 24,
+                              width: 24,
+                            ),
+
+                            Text(
+                              '  continue with Google',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account?"),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SignupScreen()),
+                      );
+                    },
+                    child: Text('Sign Up', style: TextStyle(color: maincolor)),
+                  ),
+                ],
               ),
             ],
           ),
