@@ -82,6 +82,7 @@ class GoogleSignInService {
             profilePicture: googleUser.photoUrl ?? "",
             isVolunteer: false,
             currentLocation: null,
+            isSafe: true,
           );
 
           await userDoc.set(newUser.toMap());

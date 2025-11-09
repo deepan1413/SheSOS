@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     radius: 55,
                     backgroundImage: user.profilePicture != null
                         ? NetworkImage(user.profilePicture!)
-                        : const AssetImage('assets/profile_placeholder.png')
+                        : const AssetImage('assets/google_logo.png')
                               as ImageProvider,
                   ),
                   if (isEditing)

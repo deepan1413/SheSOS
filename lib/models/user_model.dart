@@ -11,6 +11,7 @@ class UserModel {
   final String? profilePicture;
   final bool isVolunteer;
   final Map<String, double>? currentLocation;
+  final bool isSafe;
 
   UserModel({
     required this.userId,
@@ -22,6 +23,7 @@ class UserModel {
     this.profilePicture,
     this.isVolunteer = false,
     this.currentLocation,
+    required this.isSafe,
   });
 
   /// Converts object to Map (for Firestore / JSON)
@@ -36,6 +38,7 @@ class UserModel {
       'profilePicture': profilePicture,
       'isVolunteer': isVolunteer,
       'currentLocation': currentLocation,
+      'isSafe': isSafe,
     };
   }
 
@@ -63,6 +66,7 @@ class UserModel {
               ),
             )
           : null,
+      isSafe: map['isSafe'] ?? true,
     );
   }
 
@@ -95,6 +99,7 @@ class UserModel {
       profilePicture: profilePicture ?? this.profilePicture,
       isVolunteer: isVolunteer ?? this.isVolunteer,
       currentLocation: currentLocation ?? this.currentLocation,
+      isSafe: isSafe,
     );
   }
 

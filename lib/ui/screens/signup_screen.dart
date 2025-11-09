@@ -57,6 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
         isVolunteer: _isVolunteer,
         emergencyContacts: [],
         currentLocation: null,
+        isSafe: true,
       );
 
       // 3) Save to Firestore
