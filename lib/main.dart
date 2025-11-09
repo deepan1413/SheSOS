@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:she_sos/ui/screens/dashboard_screen.dart';
 import 'package:she_sos/ui/screens/home_screen.dart';
 import 'package:she_sos/ui/screens/login_screen.dart';
 import 'package:she_sos/ui/screens/splash_screen.dart';
@@ -21,10 +22,7 @@ class SheSOSApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SheSOS',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.pink,
-      ),
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.pink),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -34,7 +32,7 @@ class SheSOSApp extends StatelessWidget {
             );
           }
           if (snapshot.hasData) {
-            return const HomeScreen();
+            return const DashboardScreen();
           } else {
             return const LoginScreen();
           }

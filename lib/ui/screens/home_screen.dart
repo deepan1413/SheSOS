@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:she_sos/models/user_model.dart';
 import 'package:she_sos/ui/screens/profile_screen.dart';
+import 'package:she_sos/ui/screens/sos_screen.dart';
 import 'package:she_sos/ui/widgets/swipe_button.dart';
 import 'package:she_sos/ui/widgets/titleFont.dart';
 
@@ -113,77 +114,74 @@ class _HomeScreenState extends State<HomeScreen> {
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      drawer: Drawer(
-        child: FutureBuilder<UserModel?>(
-          future: _fetchUser(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return const Center(child: Text("Error loading user"));
-            }
+      // drawer: Drawer(
+      //   child: FutureBuilder<UserModel?>(
+      //     future: _fetchUser(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return const Center(child: CircularProgressIndicator());
+      //       }
+      //       if (snapshot.hasError) {
+      //         return const Center(child: Text("Error loading user"));
+      //       }
 
-            final userModel = snapshot.data;
-            if (userModel == null) {
-              return const Center(child: Text("User not found"));
-            }
+      //       final userModel = snapshot.data;
+      //       if (userModel == null) {
+      //         return const Center(child: Text("User not found"));
+      //       }
 
-            return Column(
-              children: [
-                DrawerHeader(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: userModel.profilePicture != null
-                            ? NetworkImage(userModel.profilePicture!)
-                            : null,
-                        child: userModel.profilePicture == null
-                            ? const Icon(Icons.person, size: 40)
-                            : null,
-                      ),
-                      const SizedBox(height: 8),
-                      TitleFont(name: "SheSOS"),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: const Text("Profile"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProfileScreen(user: userModel),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.settings),
-                  title: const Text("Settings"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: const Text("Sign Out"),
-                  onTap: () async {
-                    await FirebaseAuth.instance.signOut();
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-
-      appBar: AppBar(title: const Text("SheSOS")),
-
+      //       return Column(
+      //         children: [
+      //           DrawerHeader(
+      //             child: Column(
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               children: [
+      //                 CircleAvatar(
+      //                   radius: 40,
+      //                   backgroundImage: userModel.profilePicture != null
+      //                       ? NetworkImage(userModel.profilePicture!)
+      //                       : null,
+      //                   child: userModel.profilePicture == null
+      //                       ? const Icon(Icons.person, size: 40)
+      //                       : null,
+      //                 ),
+      //                 const SizedBox(height: 8),
+      //                 TitleFont(name: "SheSOS"),
+      //               ],
+      //             ),
+      //           ),
+      //           ListTile(
+      //             leading: const Icon(Icons.person),
+      //             title: const Text("Profile"),
+      //             onTap: () {
+      //               Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(
+      //                   builder: (_) => ProfileScreen(user: userModel),
+      //                 ),
+      //               );
+      //             },
+      //           ),
+      //           ListTile(
+      //             leading: const Icon(Icons.settings),
+      //             title: const Text("Settings"),
+      //             onTap: () {},
+      //           ),
+      //           ListTile(
+      //             leading: const Icon(Icons.logout),
+      //             title: const Text("Sign Out"),
+      //             onTap: () async {
+      //               await FirebaseAuth.instance.signOut();
+      //               if (context.mounted) {
+      //                 Navigator.pop(context);
+      //               }
+      //             },
+      //           ),
+      //         ],
+      //       );
+      //     },
+      //   ),
+      // ),
       body: Stack(
         children: [
           _loading || _currentPosition == null
@@ -247,7 +245,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 16),
                   Center(
-                    child: SwipeButton(text: 'Swipe for SOS', onSwipe: () {}),
+                    child: SwipeButton(
+                      text: 'Swipe for SOS',
+                      onSwipe: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => SosScreen()),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
