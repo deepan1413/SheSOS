@@ -6,13 +6,14 @@ import 'package:she_sos/ui/screens/dashboard_screen.dart';
 import 'package:she_sos/ui/screens/home_screen.dart';
 import 'package:she_sos/ui/screens/login_screen.dart';
 import 'package:she_sos/ui/screens/splash_screen.dart';
-import 'firebase_options.dart'; // from flutterfire configure
+import 'firebase_options.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const SheSOSApp());
 }
+//for git login
 
 class SheSOSApp extends StatelessWidget {
   const SheSOSApp({super.key});
